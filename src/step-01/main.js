@@ -5,6 +5,7 @@ const mediaStreamConstraints = {
 };
 
 const localVideo = document.querySelector('video');
+const videoButton = document.getElementById('videoButton')
 
 let localStream;
 
@@ -18,7 +19,11 @@ const handleLocalMediaStreamError = (error) => {
   console.log('navigator.getUserMedia error: ', error);
 }
 
-navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
-  .then(gotLocalMediaSteream).catch(handleLocalMediaStreamError);
+const onClickedVideoButton = () => {
+  navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
+    .then(gotLocalMediaSteream)
+    .catch(handleLocalMediaStreamError);
+}
 
+videoButton.addEventListener('click', onClickedVideoButton)
 
