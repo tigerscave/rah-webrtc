@@ -21,10 +21,10 @@ let remoteStream;
 let pc1 = null;
 let pc2 = null;
 
-let localPeerConnection;
-const servers = null;
-let startTime = null;
-
+const offerOptions = {
+  offerToReceiveAudio: 1,
+  offerToReceiveVideo: 1
+};
 
 const gotLocalMediaSteream = (mediaStream) => {
   console.log('mediaStream', mediaStream)
@@ -53,12 +53,39 @@ const handleLocalIceCandidate = (event) => {
   }
 }
 
+const handleRemoteIceCandidate = (event) => {
+  const { candidate } = event;
+  if(candidate) {
+    const newIceCandidate = new RTCIceCandidate(candidate);
+    pc1.addIceCandidate(newIceCandidate);
+  }
+}
+
 
 const gotRemoteStream = (e) => {
-  console.log("---gotRemoteStream---")
-  console.log("---e---", e)
+  console.log("gotRemoteStream", e)
   remoteVideo.srcObject = e.streams[0];
 }
+
+const createAnswerSuccess = (description) => {
+  console.log("createAnswerSuccess")
+  console.log(description)
+  pc2.setLocalDescription(description);
+  pc1.setRemoteDescription(description);
+}
+
+const createOfferSuccess = (description) => {
+  console.log("---createOfferSuccess---")
+  pc1.setLocalDescription(description);
+  
+  pc2.setRemoteDescription(description);
+  pc2.createAnswer()
+    .then(createAnswerSuccess)
+    .catch(() => {
+      alert('answer failed');
+    })
+}
+
 
 const onVideoCall = () => {
   console.log('__Call Button Clicked');
@@ -68,6 +95,14 @@ const onVideoCall = () => {
   pc2 = new RTCIceCandidate();
   pc2.addEventListener('icecandidate', handleRemoteIceCandidate);
   pc2.addEventListener('track', gotRemoteStream);
+  
+  localStream.getTracks().forEach(track => pc1.addTrack(track, localStream))
+  
+  pc1.createOffer(offerOptions)
+    .then(createOfferSuccess)
+    .catch(()=> {
+      alert('createOfferFailed');
+    })
 }
 
 callButton.addEventListener('click', onVideoCall)
