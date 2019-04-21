@@ -8,7 +8,7 @@ const mediaStreamConstraints = {
 
 
 
-const localVideo = document.querySelector('video');
+const localVideo = document.getElementById('localVideo');
 const startButton = document.getElementById('startButton')
 
 const remoteVideo = document.getElementById('remoteVideo');
@@ -91,8 +91,9 @@ const onVideoCall = () => {
   console.log('__Call Button Clicked');
   pc1 = new RTCPeerConnection();
   pc1.addEventListener('icecandidate', handleLocalIceCandidate);
+  console.log(pc1, 'this is pc1')
   
-  pc2 = new RTCIceCandidate();
+  pc2 = new RTCPeerConnection();
   pc2.addEventListener('icecandidate', handleRemoteIceCandidate);
   pc2.addEventListener('track', gotRemoteStream);
   
