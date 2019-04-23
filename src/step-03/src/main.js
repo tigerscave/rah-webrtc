@@ -1,22 +1,16 @@
 'use strict';
 
-'use strict';
-
 const mediaStreamConstraints = {
   video: true,
 };
 
-
-
 const localVideo = document.getElementById('localVideo');
-const startButton = document.getElementById('startButton')
-
 const remoteVideo = document.getElementById('remoteVideo');
+const startButton = document.getElementById('startButton')
 const callButton = document.getElementById('callButton');
 const hangupButton = document.getElementById('hangupButton');
 
 let localStream;
-let remoteStream;
 
 let pc1 = null;
 let pc2 = null;
@@ -27,7 +21,7 @@ const offerOptions = {
 };
 
 const gotLocalMediaSteream = (mediaStream) => {
-  console.log('mediaStream', mediaStream)
+  console.log('_mediaStream_', mediaStream)
   localStream = mediaStream
   localVideo.srcObject = mediaStream;
 }
@@ -47,7 +41,7 @@ const handleLocalIceCandidate = (event) => {
   console.log('localCandidate', event);
   const { candidate } = event;
   if (candidate) {
-    console.log('fucking condidate');
+    console.log(' __condidate___');
     const newIceCandidate = new RTCIceCandidate(candidate);
     pc2.addIceCandidate(newIceCandidate)
   }
@@ -60,7 +54,6 @@ const handleRemoteIceCandidate = (event) => {
     pc1.addIceCandidate(newIceCandidate);
   }
 }
-
 
 const gotRemoteStream = (e) => {
   console.log("gotRemoteStream", e)
@@ -109,9 +102,10 @@ const onVideoCall = () => {
 callButton.addEventListener('click', onVideoCall)
 
 const onHangUpCall = () => {
+  console.log('this is hangup call')
   pc1.close();
   pc2.close();
   pc1 = null;
-  pc2 = null; 
+  pc2 = null;
 }
 hangupButton.addEventListener('click', onHangUpCall)
