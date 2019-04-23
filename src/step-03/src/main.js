@@ -107,3 +107,11 @@ const onVideoCall = () => {
 }
 
 callButton.addEventListener('click', onVideoCall)
+
+const onHangUpCall = () => {
+  pc1.close();
+  pc2.close();
+  pc1 = null;
+  pc2 = null; 
+}
+hangupButton.addEventListener('click', onHangUpCall)
