@@ -23,6 +23,10 @@ const removeUser = socket => {
   console.log(`socket id ${socket.id} is removed.`);
 };
 
+const handleReloadUsers = socket => {
+  socket.emit('userList', users)
+}
+
 io.on('connection', socket => {
   console.log('new user connected ...');
   addUser(socket);
@@ -30,5 +34,9 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     removeUser(socket);
   });
+  
+  socket.on('reloadUsers', () => {
+    handleReloadUsers(socket)
+  })
 })
 
