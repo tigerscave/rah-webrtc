@@ -5,6 +5,28 @@ socket.on('connect', () => {
   document.getElementById('socketId').innerText = socket.id;
 });
 
+let localStream;
+const localVideo = document.getElementById('localVideo');
+const mediaDevice = {
+  video: true,
+  audio: false,
+}
+
+const handleLocalMediaStream = mediaStream => {
+  localVideo.srcObject = mediaStream
+  localStream = mediaStream
+}
+
+const onClickedStartButton = () => {
+  navigator.mediaDevices.getUserMedia(mediaDevice)
+    .then(handleLocalMediaStream)
+    .catch(() => {
+      alert('Error: cannot load media stream')
+    })
+}
+
+const startButton = document.getElementById('startButton');
+startButton.addEventListener('click', onClickedStartButton);
 
 const userList = document.getElementById("userList");
 
@@ -24,6 +46,8 @@ socket.on('userList', users => {
     const listNode = document.createElement('LI');
     const textNode = document.createTextNode(id);
     listNode.appendChild(textNode);
+  
+    userList.appendChild(listNode)
   })
 })
 
