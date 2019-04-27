@@ -27,7 +27,7 @@ const handleReloadUsers = socket => {
   socket.emit('userList', users)
 };
 
-const handleOfferFromSender = data => {
+const handleOfferFromSender = (socket, data) => {
   const { description, userId } = data;
   socket.to(userId).emit('offerToReceiver', {
     description,

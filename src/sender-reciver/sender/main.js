@@ -55,6 +55,7 @@ const createOfferSuccess = (id, description) => {
         userId: id,
       })
     });
+  console.log('createOffer', id, description)
 };
 
 const onClickedCallButton = id => {
