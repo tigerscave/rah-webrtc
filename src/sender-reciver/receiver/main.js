@@ -20,7 +20,7 @@ const handleIceCandidate = event => {
 const handleOnTrackConnection = event => {
   console.log("---handleOnTrackConnection---", event);
   const remoteVideo = document.getElementById('remoteVideo')
-  remoteVideo.srcObject = event.stream[0];
+  remoteVideo.srcObject = event.streams[0];
 };
 
 const handleMessageReceived = event => {
@@ -41,7 +41,7 @@ const createAnswer = (senderId, description) => {
     
     socket.emit('answerFromReceiver', {
       description,
-      senderId
+      userId: senderId
     })
     
     console.log("pc", pc.connectionState)
