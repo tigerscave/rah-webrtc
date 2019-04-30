@@ -23,6 +23,23 @@ const removeUser = socket => {
   console.log(`socket id ${socket.id} is removed.`);
 };
 
+const handleReloadUsers = socket => {
+  socket.emit('userList', users)
+};
+
+const handleOfferFromSender = (socket, data) => {
+  const { description, userId } = data;
+  socket.to(userId).emit('offerToReceiver', {
+    description,
+    senderId: socket.id
+  })
+};
+
+const handleAnswerFromReceiver = (socket, data) => {
+  const { userId, description } = data;
+  socket.to(userId).emit('answerToSender', description)
+}
+
 io.on('connection', socket => {
   console.log('new user connected ...');
   addUser(socket);
@@ -30,5 +47,17 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     removeUser(socket);
   });
+  
+  socket.on('reloadUsers', () => {
+    handleReloadUsers(socket)
+  })
+  
+  socket.on('offerFromSender', data => {
+    handleOfferFromSender(socket, data)
+  })
+  
+  socket.on('answerFromReceiver', data => {
+    handleAnswerFromReceiver(socket, data)
+  })
 })
 
