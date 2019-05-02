@@ -7,6 +7,7 @@ socket.on('connect', () => {
 
 let localStream;
 let pc;
+let dataChannel = null;   // for WebRTC data channel
 const localVideo = document.getElementById('localVideo');
 const mediaDevice = {
   video: true,
@@ -23,7 +24,7 @@ const handleLocalMediaStream = mediaStream => {
   localStream = mediaStream;
   
   pc = new RTCPeerConnection();
-  pc.createDataChannel('dataChannel', null)
+  dataChannel = pc.createDataChannel('hogeData')
 }
 
 const onClickedStartButton = () => {
@@ -103,3 +104,12 @@ socket.on('answerToSender', description => {
     console.log('pc connectionState', pc.connectionState)
   })
 })
+
+const onHogeButtonClicked = () => {
+  console.log("hoge")
+  dataChannel.send(JSON.stringify({name: 'hoge'}))
+  console.log(dataChannel)
+}
+
+const hogeButton = document.getElementById('hogeButton');
+hogeButton.addEventListener('click', onHogeButtonClicked);
