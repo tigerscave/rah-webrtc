@@ -107,9 +107,17 @@ socket.on('answerToSender', description => {
 
 const onHogeButtonClicked = () => {
   console.log("hoge")
-  dataChannel.send(JSON.stringify({name: 'hoge'}))
+  dataChannel.send('turn-on');
   console.log(dataChannel)
 }
 
 const hogeButton = document.getElementById('hogeButton');
 hogeButton.addEventListener('click', onHogeButtonClicked);
+
+const onClickedHangUpButton = () => {
+  console.log('hangup clicked')
+  dataChannel.send('turn-off');
+}
+
+const hangUpButton = document.getElementById('hangUpButton');
+hangUpButton.addEventListener('click', onClickedHangUpButton)
