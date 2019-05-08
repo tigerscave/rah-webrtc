@@ -121,3 +121,69 @@ const onClickedHangUpButton = () => {
 
 const hangUpButton = document.getElementById('hangUpButton');
 hangUpButton.addEventListener('click', onClickedHangUpButton)
+
+
+const haveEvents = 'GamepadEvent' in window;
+const rAF = window.webkitRequestAnimationFrame ||
+  window.requestAnimationFrame;
+
+const connecthandler = (e) => {
+  addGamepad(e.gamepad);
+}
+
+const addGamepad = e => {
+  rAF(updateStatus)
+}
+
+const updateStatus = () => {
+  scangamepads();
+  const gp = navigator.getGamepads()[0]
+  if (gp.buttons[0].pressed) {
+    console.log('button pressed')
+    dataChannel.send('turn-on');
+  }
+  if (gp.buttons[1].pressed) {
+    console.log('button pressed')
+    dataChannel.send('turn-off');
+  }
+  rAF(updateStatus)
+}
+
+function scangamepads() {
+  const gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+  addGamepad(gamepads);
+}
+
+if (haveEvents) {
+  window.addEventListener("gamepadconnected", addGamepad);
+  window.addEventListener("gamepaddisconnected", () => {
+    console.log('gamepad disconnected ...  ')
+  });
+} else {
+  setInterval(scangamepads, 500);
+}
+
+
+
+// const event = 'GamepadEvent' in window;
+// const rAF =   window.requestAnimationFrame;
+//
+//
+//
+// if (event) {
+//   window.addEventListener('gamepadconnected', e => {
+//     const gp = navigator.getGamepads()[0]
+//     console.log('game pad connected', e)
+//     rAF(() => {
+//       if (gp.buttons[0].pressed) {
+//         console.log('button pressed')
+//       }
+//     })
+//   });
+//
+//   window.addEventListener('gamepaddisconnected', event => {
+//     console.log('A gamepad disconnected');
+//   })
+// }
+
+
