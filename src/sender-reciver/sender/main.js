@@ -140,10 +140,10 @@ const updateStatus = () => {
   scangamepads();
   const gp = navigator.getGamepads()[0]
   if (gp.buttons[0].pressed) {
-    dataChannel.send('turn-on');
+    // dataChannel.send('turn-on');
   }
   if (gp.buttons[1].pressed) {
-    dataChannel.send('turn-off');
+    // dataChannel.send('turn-off');
   }
   if(gp.axes[0]) {
     let leftAxes = gp.axes[0] * 90 + 90;
@@ -151,6 +151,7 @@ const updateStatus = () => {
   } else if (gp.axes[2]) {
     let rightAxes = gp.axes[2] * 90 + 90;
     console.log('rightAxes: ', rightAxes)
+    dataChannel.send(rightAxes)
   }
   rAF(updateStatus)
 }
