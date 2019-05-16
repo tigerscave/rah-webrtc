@@ -139,20 +139,34 @@ const addGamepad = e => {
 const updateStatus = () => {
   scangamepads();
   const gp = navigator.getGamepads()[0]
-  if (gp.buttons[0].pressed) {
-    // dataChannel.send('turn-on');
-  }
-  if (gp.buttons[1].pressed) {
-    // dataChannel.send('turn-off');
-  }
-  if(gp.axes[0]) {
-    let leftAxes = gp.axes[0] * 90 + 90;
-    console.log('leftAxes is: ', leftAxes)
-  } else if (gp.axes[2]) {
-    let rightAxes = gp.axes[2] * 90 + 90;
-    console.log('rightAxes: ', rightAxes)
-    dataChannel.send(rightAxes)
-  }
+  let data = {
+    gpAButton: gp.buttons[0].pressed,
+    gpBButton: gp.buttons[1].pressed,
+    gpAxes1: gp.axes[0],
+    gpAxes2: gp.axes[1],
+    gpAxes3: gp.axes[2],
+    gpAxes4: gp.axes[3],
+  };
+  
+  dataChannel.send(JSON.stringify(data))
+  
+  // if (gp.buttons[0].pressed) {
+  //   // dataChannel.send('turn-on');
+  // }
+  // if (gp.buttons[1].pressed) {
+  //   // dataChannel.send('turn-off');
+  // }
+  // if(gp.axes[0]) {
+  //   let leftAxes = gp.axes[0] * 90 + 90;
+  //   console.log('leftAxes is: ', leftAxes)
+  //   dataChannel.send()
+  // } else if (gp.axes[2]) {
+  //   let rightAxes = gp.axes[2] * 90 + 90;
+  //   console.log('rightAxes: ', rightAxes)
+  //   dataChannel.send(rightAxes)
+  // }
+  
+  
   rAF(updateStatus)
 }
 
